@@ -3,6 +3,7 @@
 #include "Code/Common/CustomParameter.h"
 #include "code/SceneElements/Material.h"
 #include <Utils/StringUtils.h>
+#include <IO/Path.h>
 #include <IGame/IGame.h>
 #include <stdint.h>
 
@@ -37,7 +38,7 @@ void MaterialProcessor::ExtractData(IGameMaterial* maxMaterial)
 			continue;
 
 		int slot = maxTexrture->GetStdMapSlot();
-		std::string textureName = StringUtils::ToNarrow(maxTexrture->GetBitmapFileName());
+		std::string textureName = Path(StringUtils::ToNarrow(maxTexrture->GetBitmapFileName())).GetFilename();
 
 		switch (slot)
 		{
@@ -72,6 +73,7 @@ Material* MaterialProcessor::CreateMaterial()
 	{
 		material->ShaderName = "SolidColor";
 		material->AddParameter("u_color", "vec3", StringUtils::ToString(m_diffuseColor));
+		material->AddParameter("u_diffTex", "texture", m_diffuseTextureName);
 	}
 
 	return material;
