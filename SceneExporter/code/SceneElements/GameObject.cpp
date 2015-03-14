@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include <XML/XmlWriter.h>
+#include <IGame/IGame.h>
 #include <sstream>
 
 GameObject::GameObject() :
@@ -30,12 +31,15 @@ GameObject::~GameObject()
 		delete m_light;
 }
 
-void GameObject::SetFromNode(IGameNode* node)
+void GameObject::SetFromNode(IGameScene* igScene, IGameNode* igNode)
 {
-	if (node == NULL)
+	if (igNode == NULL)
 		return;
 
-	m_transform = ExtractTransform(node);
+	m_name = StringUtils::ToNarrow(igNode->GetName());
+
+	m_transform = ExtractTransform(igNode);
+	m_mesh = SceneElements::Mesh::ExtractFromNode(igScene, igNode);
 }
 
 bool GameObject::IsEmpty() const
@@ -49,22 +53,26 @@ std::string GameObject::Serialize()
 
 	XmlWriter xml(&ss, 0);
 	xml.OpenElement("GameObject");
+	xml.WriteAttribute("name", m_name);
 
 	if (m_transform != NULL)
 		xml.CreateElementInline(m_transform->Serialize());
+
+	if (m_mesh != NULL)
+		xml.CreateElementInline(m_mesh->Serialize());
 
 	xml.CloseElement();
 
 	return ss.str();
 }
 
-Transform* GameObject::ExtractTransform(IGameNode* node)
+Transform* GameObject::ExtractTransform(IGameNode* igNode)
 {
-	if (node == NULL)
+	if (igNode == NULL)
 		return NULL;
 
 	Transform* transform = new Transform();
-	transform->SetFromNode(node);
+	transform->SetFromNode(igNode);
 
 	return transform;
 }

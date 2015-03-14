@@ -2,20 +2,24 @@
 
 #include <string>
 
-class IGameMesh;
+class IGameNode;
+class IGameScene;
 
-class Mesh
+namespace SceneElements
 {
-public:
-	Mesh();
-	~Mesh() {};
+	class Mesh
+	{
+	public:
+		Mesh();
+		~Mesh() {};
 
-	void SetFromMesh(IGameMesh* mesh);
+		static Mesh* ExtractFromNode(IGameScene* igScene, IGameNode* node);
 
-	std::string Serialize();
+		std::string Serialize();
 
-private:
-	std::string m_meshName;
-	std::string m_texName;
-};
+	private:
+		std::string m_meshName;
+		std::string m_materialName;
+	};
+}
 

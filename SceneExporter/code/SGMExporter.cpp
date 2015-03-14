@@ -102,7 +102,7 @@ bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_i
 	for (uint32_t i = 0; i < nodes.size(); i++)
 	{
 		GameObject* gameObject = new GameObject();
-		gameObject->SetFromNode(nodes[i]);
+		gameObject->SetFromNode(scene, nodes[i]);
 		m_gameObjects.push_back(gameObject);
 	}
 
@@ -884,7 +884,7 @@ bool SGMExporter::WriteSceneToFile()
 		GameObject* gameObject = (*it);
 
 		if (gameObject->IsEmpty())
-			;// continue;
+			continue;
 		
 		xmlWriter.CreateElementInline(gameObject->Serialize());
 	}
