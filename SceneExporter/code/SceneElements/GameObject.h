@@ -7,8 +7,8 @@ class Transform;
 namespace SceneElements
 {
 	class Mesh;
+	class Camera;
 }
-class Camera;
 class Light;
 class IGameNode;
 class IGameScene;
@@ -33,7 +33,7 @@ private:
 
 	Transform* m_transform;
 	SceneElements::Mesh* m_mesh;
-	Camera* m_camera;
+	SceneElements::Camera* m_camera;
 	Light* m_light;
 
 	Transform* ExtractTransform(IGameNode* igNode);

@@ -2,18 +2,25 @@
 
 #include <string>
 
-class IGameCamera;
+class IGameNode;
+class IGameScene;
 
-class Camera
+namespace SceneElements
 {
-public:
-	Camera();
-	~Camera() {};
+	class Camera
+	{
+	public:
+		Camera();
+		~Camera() {};
 
-	void SetFromCamera(IGameCamera* camera);
+		static Camera* ExtractFromNode(IGameScene* igScene, IGameNode* node);
 
-	std::string Serialize();
+		std::string Serialize();
 
-private:
-};
+	private:
+		float m_fov;
+		float m_nearPlane;
+		float m_farPlane;
+	};
+}
 
