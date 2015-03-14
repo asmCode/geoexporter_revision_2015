@@ -1,6 +1,12 @@
 #include "SGMExporter.h"
 #include <Utils/StringUtils.h>
 
+#include <IGame\igame.h>
+#include <Point4.h>
+#include <windows.h>
+#include <vector>
+#include <fstream>
+
 SGMExporter::SGMExporter()
 {
 }

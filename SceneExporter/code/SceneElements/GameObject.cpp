@@ -3,6 +3,8 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Light.h"
+#include <XML/XmlWriter.h>
+#include <sstream>
 
 GameObject::GameObject() :
 	m_transform(NULL),
@@ -30,11 +32,40 @@ GameObject::~GameObject()
 
 void GameObject::SetFromNode(IGameNode* node)
 {
+	if (node == NULL)
+		return;
 
+	m_transform = ExtractTransform(node);
+}
+
+bool GameObject::IsEmpty() const
+{
+	return m_mesh == NULL && m_camera == NULL && m_light == NULL;
 }
 
 std::string GameObject::Serialize()
 {
-	return "";
+	std::stringstream ss;
+
+	XmlWriter xml(&ss, 0);
+	xml.OpenElement("GameObject");
+
+	if (m_transform != NULL)
+		xml.CreateElementInline(m_transform->Serialize());
+
+	xml.CloseElement();
+
+	return ss.str();
+}
+
+Transform* GameObject::ExtractTransform(IGameNode* node)
+{
+	if (node == NULL)
+		return NULL;
+
+	Transform* transform = new Transform();
+	transform->SetFromNode(node);
+
+	return transform;
 }
 

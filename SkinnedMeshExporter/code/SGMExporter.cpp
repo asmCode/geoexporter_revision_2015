@@ -1,6 +1,6 @@
 #include "sgmexporter.h"
-#include "XmlWriter.h"
 
+#include <XML/XmlWriter.h>
 #include <Utils/StringUtils.h>
 #include <Utils/Log.h>
 

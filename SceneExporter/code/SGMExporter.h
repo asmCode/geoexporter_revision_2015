@@ -13,6 +13,8 @@
 #include "..\..\CommonIncludes\IProgressObserver.h"
 #include "..\..\CommonIncludes\IExportInterface.h"
 
+class GameObject;
+
 class Ribbon;
 class Source;
 class Destination;
@@ -33,8 +35,11 @@ private:
 	typedef std::map<std::string, Material*> MaterialsMap;
 	typedef std::vector<CustomSceneElement*> CustomSceneElementsVector;
 
+	std::vector<GameObject*> m_gameObjects;
+
 	std::vector<IProgressObserver*> observers;
 	std::string fileName;
+	std::string sceneName;
 
 	IGameScene *scene;
 
@@ -95,6 +100,10 @@ private:
 	bool GetPropertyBool(IGameNode* node, const std::string& name, bool& value);
 	bool GetPropertyInt(IGameNode* node, const std::string& name, int& value);
 	bool GetPropertyString(IGameNode* node, const std::string& name, std::string& value);
+
+	void FlattenNodes(IGameNode* node, std::vector<IGameNode*>& nodes);
+
+	bool WriteSceneToFile();
 
 public:
 	SGMExporter();

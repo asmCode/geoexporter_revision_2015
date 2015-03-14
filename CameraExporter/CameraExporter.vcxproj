@@ -109,7 +109,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>d:\stuff\Infected Bunnies\code\ssg02\HerdBunniesSimulator\Framework;c:\Program Files (x86)\Autodesk\maxsdk\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>d:\stuff\Revision 2015\Code\Framework;c:\Program Files (x86)\Autodesk\maxsdk\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>

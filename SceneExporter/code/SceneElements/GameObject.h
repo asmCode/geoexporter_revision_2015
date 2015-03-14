@@ -15,8 +15,13 @@ public:
 	GameObject();
 	~GameObject();
 
+	//
 	void SetFromNode(IGameNode* node);
 
+	// nie posiada zadnego komponentu poza Transform
+	bool IsEmpty() const;
+
+	//
 	std::string Serialize();
 
 private:
@@ -26,5 +31,7 @@ private:
 	Mesh* m_mesh;
 	Camera* m_camera;
 	Light* m_light;
+
+	Transform* ExtractTransform(IGameNode* node);
 };
 

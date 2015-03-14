@@ -11,11 +11,12 @@
 #include "SceneElements/Material.h"
 #include "SceneElements/StaticSource.h"
 #include "SceneElements/StaticDestination.h"
+#include "SceneElements/GameObject.h"
 
 #include "../MaterialProcessor.h"
 #include "Serializers/CustomParameterSerializer.h"
 
-#include "XmlWriter.h"
+#include <XML/XmlWriter.h>
 #include <Utils/StringUtils.h>
 #include <Utils/Log.h>
 
@@ -61,7 +62,7 @@ bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_i
 	scene = GetIGameInterface();
 	assert(scene != NULL);
 
-	std::string sceneName = StringUtils::ToNarrow(scene->GetSceneFileName());
+	sceneName = StringUtils::ToNarrow(scene->GetSceneFileName());
 	sceneName.replace(sceneName.find(".max"), 4, "");
 
 	fileName = StringUtils::ToNarrow(name) + sceneName + ".scene";
@@ -82,6 +83,7 @@ bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_i
 		return false;
 	}
 
+	/*
 	std::vector<IGameNode*> sceneNodes;
 	std::vector<IGameNode*> staticNodes;
 	for (int i = 0; i < scene->GetTopLevelNodeCount(); i++)
@@ -91,84 +93,20 @@ bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_i
 
 	for (int i = 0; i < sceneNodes.size(); i++)
 		ProcessSceneElement(sceneNodes[i]);
+	*/
 
-	std::ofstream file(fileName);
-	if (file.fail())
+	std::vector<IGameNode*> nodes;
+	for (int i = 0; i < scene->GetTopLevelNodeCount(); i++)
+		FlattenNodes(scene->GetTopLevelNode(i), nodes);
+
+	for (uint32_t i = 0; i < nodes.size(); i++)
 	{
-		Log::LogT("error: couldn't open file");
-		return false;
+		GameObject* gameObject = new GameObject();
+		gameObject->SetFromNode(nodes[i]);
+		m_gameObjects.push_back(gameObject);
 	}
 
-	XmlWriter xmlWriter(&file, 0);
-
-	xmlWriter.OpenElement("Scene");
-	xmlWriter.WriteAttribute("name", sceneName.c_str());
-
-	xmlWriter.OpenElement("Ribbons");
-
-	for (RibbonsMap::iterator it = m_ribbons.begin(); it != m_ribbons.end(); it++)
-	{
-		xmlWriter.OpenElement("Ribbon");
-
-		if (it->second->Source != NULL)
-		{
-			xmlWriter.OpenElement("Source");
-			xmlWriter.WriteAttribute<const char*>("mesh_name", it->second->Source->MeshName.c_str());
-			xmlWriter.WriteAttribute<bool>("destroy", it->second->Source->Destroy);
-			xmlWriter.WriteAttribute<bool>("stay", it->second->Source->Stay);
-			WriteMaterialAttribIfExist(xmlWriter, it->second->Source->MaterialName);
-			xmlWriter.CloseElement();
-		}
-
-		if (it->second->Destination != NULL)
-		{
-			xmlWriter.OpenElement("Destination");
-			xmlWriter.WriteAttribute<const char*>("mesh_name", it->second->Destination->MeshName.c_str());
-			xmlWriter.WriteAttribute<bool>("stay", it->second->Destination->Stay);
-			WriteMaterialAttribIfExist(xmlWriter, it->second->Destination->MaterialName);
-			xmlWriter.CloseElement();
-		}
-
-		if (it->second->StaticSource != NULL)
-		{
-			xmlWriter.OpenElement("StaticSource");
-			xmlWriter.WriteAttribute<const char*>("mesh_name", it->second->StaticSource->MeshName.c_str());
-			WriteMaterialAttribIfExist(xmlWriter, it->second->StaticSource->MaterialName);
-			xmlWriter.CloseElement();
-		}
-
-		if (it->second->StaticDestination != NULL)
-		{
-			xmlWriter.OpenElement("StaticDestination");
-			xmlWriter.WriteAttribute<const char*>("mesh_name", it->second->StaticDestination->MeshName.c_str());
-			WriteMaterialAttribIfExist(xmlWriter, it->second->StaticDestination->MaterialName);
-			xmlWriter.CloseElement();
-		}
-
-		Path* path = it->second->Path;
-
-		if (path != NULL)
-		{
-			WritePath(xmlWriter, path);
-		}
-		else
-			Log::LogT("Ribbon %s doesn't have path", it->first.c_str());
-
-		xmlWriter.CloseElement();
-	}
-
-	xmlWriter.CloseElement(); // Ribbons
-
-	WriteStaticNodes(xmlWriter, staticNodes);
-	WriteGuys(xmlWriter);
-	WriteCustomSceneElements(xmlWriter);
-	WriteMaterials(xmlWriter);
-
-	xmlWriter.CloseElement(); // Scene
-
-	file.close();
-
-	return true;
+	return WriteSceneToFile();
 }
 
 void SGMExporter::RegisterObserver(IProgressObserver *observer)
@@ -914,3 +852,50 @@ bool SGMExporter::GetPropertyString(IGameNode* node, const std::string& name, st
 
 	return true;
 }
+
+void SGMExporter::FlattenNodes(IGameNode* node, std::vector<IGameNode*>& nodes)
+{
+	if (node == NULL)
+		return;
+
+	nodes.push_back(node);
+
+	for (int i = 0; i < node->GetChildCount(); i++)
+		FlattenNodes(node->GetNodeChild(i), nodes);
+}
+
+bool SGMExporter::WriteSceneToFile()
+{
+	std::ofstream file(fileName);
+	if (file.fail())
+	{
+		Log::LogT("error: couldn't open file");
+		return false;
+	}
+
+	XmlWriter xmlWriter(&file, 0);
+
+	xmlWriter.OpenElement("Scene");
+	xmlWriter.WriteAttribute("name", sceneName.c_str());
+
+	xmlWriter.OpenElement("GameObjects");
+	for (std::vector<GameObject*>::iterator it = m_gameObjects.begin(); it != m_gameObjects.end(); ++it)
+	{
+		GameObject* gameObject = (*it);
+
+		if (gameObject->IsEmpty())
+			;// continue;
+		
+		xmlWriter.CreateElementInline(gameObject->Serialize());
+	}
+	xmlWriter.CloseElement(); // GameObjects
+
+	//WriteMaterials(xmlWriter);
+
+	xmlWriter.CloseElement(); // Scene
+
+	file.close();
+
+	return true;
+}
+

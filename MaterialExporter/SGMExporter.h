@@ -1,20 +1,14 @@
 #pragma once
 
-#include <windows.h>
-#include <vector>
-#include <fstream>
-#include <IO\Path.h>
-
-#include <IGame\igame.h>
-#include <Point4.h>
-
-#include "XmlWriter.h"
-
+#include <IO/Path.h>
+#include <XML/XmlWriter.h>
 #include "TexturesSlotsHelper.h"
 
 #include "..\CommonIncludes\IProgressSubject.h"
 #include "..\CommonIncludes\IProgressObserver.h"
 #include "..\CommonIncludes\IExportInterface.h"
+
+class IGameMaterial;
 
 class SGMExporter : public IExportInterface
 {
