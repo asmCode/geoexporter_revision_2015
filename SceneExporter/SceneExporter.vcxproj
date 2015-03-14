@@ -149,12 +149,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Code\Framework\IO\Win32\Path.cpp" />
     <ClCompile Include="..\..\Code\Framework\Utils\Log.cpp" />
     <ClCompile Include="..\..\Code\Framework\Utils\StringUtils.cpp" />
     <ClCompile Include="code\Common\CustomParameter.cpp" />
     <ClCompile Include="code\Common\Parameter.cpp" />
     <ClCompile Include="code\DllMain.cpp" />
+    <ClCompile Include="code\SceneElements\Camera.cpp" />
+    <ClCompile Include="code\SceneElements\GameObject.cpp" />
+    <ClCompile Include="code\SceneElements\Light.cpp" />
     <ClCompile Include="code\SceneElements\Material.cpp" />
+    <ClCompile Include="code\SceneElements\Mesh.cpp" />
+    <ClCompile Include="code\SceneElements\Transform.cpp" />
     <ClCompile Include="code\Serializers\CustomParameterSerializer.cpp" />
     <ClCompile Include="code\SGMExporter.cpp" />
     <ClCompile Include="MaterialProcessor.cpp" />
@@ -164,10 +170,15 @@
     <ClInclude Include="code\Common\CustomParameter.h" />
     <ClInclude Include="code\Common\Parameter.h" />
     <ClInclude Include="code\Common\ParameterType.h" />
+    <ClInclude Include="code\SceneElements\Camera.h" />
     <ClInclude Include="code\SceneElements\CustomSceneElement.h" />
     <ClInclude Include="code\SceneElements\Destination.h" />
+    <ClInclude Include="code\SceneElements\GameObject.h" />
     <ClInclude Include="code\SceneElements\Guy.h" />
     <ClInclude Include="code\SceneElements\Key.h" />
+    <ClInclude Include="code\SceneElements\Light.h" />
+    <ClInclude Include="code\SceneElements\Mesh.h" />
+    <ClInclude Include="code\SceneElements\Transform.h" />
     <ClInclude Include="code\SceneElements\TransformKey.h" />
     <ClInclude Include="code\SceneElements\Material.h" />
     <ClInclude Include="code\SceneElements\Path.h" />
