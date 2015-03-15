@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Light.h"
+#include <Math/MathUtils.h>
 #include <XML/XmlWriter.h>
 #include <IGame/IGame.h>
 #include <sstream>
@@ -42,6 +43,18 @@ void GameObject::SetFromNode(IGameScene* igScene, IGameNode* igNode)
 	m_mesh = SceneElements::Mesh::ExtractFromNode(igScene, igNode);
 	m_camera = SceneElements::Camera::ExtractFromNode(igScene, igNode);
 	m_light = SceneElements::Light::ExtractFromNode(igScene, igNode);
+
+	// w 3d studio max kamera domyslnie patrzy w dol, dlatego trzeba ja obrocic o 90 wzgledem osi x
+	if (m_camera != NULL)
+	{
+		//m_transform->m_rotation.x interpretowany jako angle, reszta jako axis
+
+		AngAxis angAxis(
+			Quat(AngAxis(1, 0, 0, MathUtils::PI2)) *
+			Quat(AngAxis(m_transform->m_rotation.y, m_transform->m_rotation.z, m_transform->m_rotation.w, m_transform->m_rotation.x)));
+		
+		m_transform->m_rotation = sm::Vec4(angAxis.angle, angAxis.axis.x, angAxis.axis.y, angAxis.axis.z);
+	}
 }
 
 bool GameObject::IsEmpty() const

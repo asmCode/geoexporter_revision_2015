@@ -106,6 +106,18 @@ bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_i
 		m_gameObjects.push_back(gameObject);
 	}
 
+	for (int i = 0; i < scene->GetRootMaterialCount(); i++)
+	{
+		IGameMaterial* igMaterial = scene->GetRootMaterial(i);
+		if (igMaterial == NULL)
+			continue;
+
+		MaterialProcessor materialProcessor;
+		Material* material = materialProcessor.Create(igMaterial);
+		if (material != NULL)
+			m_materials[material->Name] = material;
+	}
+
 	return WriteSceneToFile();
 }
 
@@ -890,7 +902,7 @@ bool SGMExporter::WriteSceneToFile()
 	}
 	xmlWriter.CloseElement(); // GameObjects
 
-	//WriteMaterials(xmlWriter);
+	WriteMaterials(xmlWriter);
 
 	xmlWriter.CloseElement(); // Scene
 

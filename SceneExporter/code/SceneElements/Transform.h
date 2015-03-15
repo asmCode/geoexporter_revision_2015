@@ -15,8 +15,7 @@ public:
 	void SetFromNode(IGameNode* node);
 
 	std::string Serialize();
-	
-private:
+
 	sm::Vec3 m_position;
 	sm::Vec4 m_rotation;
 	sm::Vec3 m_scale;

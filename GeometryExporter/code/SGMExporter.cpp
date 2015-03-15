@@ -382,9 +382,9 @@ void SGMExporter::ExtractVertices(FaceEx *gFace, IGameMesh *gMesh, std::vector<S
 		Scene3DVertex *vert = new Scene3DVertex();
 
 		vert ->position.Set(
-			gMesh ->GetVertex(gFace ->vert[i]).x,
-			gMesh ->GetVertex(gFace ->vert[i]).y,
-			gMesh ->GetVertex(gFace ->vert[i]).z);
+			gMesh->GetVertex(gFace ->vert[i], true).x,
+			gMesh->GetVertex(gFace->vert[i], true).y,
+			gMesh->GetVertex(gFace->vert[i], true).z);
 
 		if (VertexInformation::HasAttrib(vertexType, VertexAttrib::Coords1))
 		{
@@ -400,7 +400,7 @@ void SGMExporter::ExtractVertices(FaceEx *gFace, IGameMesh *gMesh, std::vector<S
 			vert ->coords2.Set(uv.x, uv.y);
 		}
 
-		Point3 normal = gMesh->GetNormal(faceIndex, i);
+		Point3 normal = gMesh->GetNormal(faceIndex, i, true);
 
 		Point3 a(objectTM.GetRow(0).x, objectTM.GetRow(0).y, objectTM.GetRow(0).z);
 		Point3 b(objectTM.GetRow(1).x, objectTM.GetRow(1).y, objectTM.GetRow(1).z);

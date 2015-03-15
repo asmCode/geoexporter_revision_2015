@@ -161,7 +161,7 @@ void MainForm::ButtonExportPressed()
 
 void MainForm::ButtonExportScenePressed()
 {
-	exporterController->ExportScene(this, "d:\\stuff\\River Wash 2014 Demo\\Code\\Data\\Scenes\\");
+	exporterController->ExportScene(this, "d:\\stuff\\Revision 2015\\Code\\Data\\Scenes\\");
 
 	MessageBoxA(hwnd, "Scene", "Ready", MB_ICONINFORMATION);
 	result = MainForm::OK;
