@@ -41,6 +41,7 @@ void GameObject::SetFromNode(IGameScene* igScene, IGameNode* igNode)
 	m_transform = ExtractTransform(igNode);
 	m_mesh = SceneElements::Mesh::ExtractFromNode(igScene, igNode);
 	m_camera = SceneElements::Camera::ExtractFromNode(igScene, igNode);
+	m_light = SceneElements::Light::ExtractFromNode(igScene, igNode);
 }
 
 bool GameObject::IsEmpty() const
@@ -64,6 +65,9 @@ std::string GameObject::Serialize()
 
 	if (m_camera != NULL)
 		xml.CreateElementInline(m_camera->Serialize());
+
+	if (m_light != NULL)
+		xml.CreateElementInline(m_light->Serialize());
 
 	xml.CloseElement();
 

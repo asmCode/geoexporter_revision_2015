@@ -1,19 +1,27 @@
 #pragma once
 
+#include <Math/Vec3.h>
 #include <string>
 
-class IGameLight;
+class IGameNode;
+class IGameScene;
 
-class Light
+namespace SceneElements
 {
-public:
-	Light();
-	~Light() {};
+	class Light
+	{
+	public:
+		Light();
+		~Light() {};
 
-	void SetFromLight(IGameLight* light);
+		static Light* ExtractFromNode(IGameScene* igScene, IGameNode* node);
 
-	std::string Serialize();
+		std::string Serialize();
 
-private:
-};
+	private:
+		std::string m_type;
+		sm::Vec3 m_color;
+		float m_brightness;
+	};
+}
 
