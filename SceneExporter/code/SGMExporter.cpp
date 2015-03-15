@@ -83,18 +83,6 @@ bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_i
 		return false;
 	}
 
-	/*
-	std::vector<IGameNode*> sceneNodes;
-	std::vector<IGameNode*> staticNodes;
-	for (int i = 0; i < scene->GetTopLevelNodeCount(); i++)
-		FilterSceneNodes(scene->GetTopLevelNode(i), sceneNodes, staticNodes);
-
-	Log::LogT("found %d scene nodes", sceneNodes.size());
-
-	for (int i = 0; i < sceneNodes.size(); i++)
-		ProcessSceneElement(sceneNodes[i]);
-	*/
-
 	std::vector<IGameNode*> nodes;
 	for (int i = 0; i < scene->GetTopLevelNodeCount(); i++)
 		FlattenNodes(scene->GetTopLevelNode(i), nodes);
