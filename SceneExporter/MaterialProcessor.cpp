@@ -28,8 +28,8 @@ void MaterialProcessor::ExtractData(IGameMaterial* maxMaterial)
 	m_diffuseColor = MaxHelpers::GetPropertyVec3(maxMaterial->GetDiffuseData());
 	m_specularColor = MaxHelpers::GetPropertyVec3(maxMaterial->GetSpecularData());
 	m_opacity = MaxHelpers::GetPropertyFloat(maxMaterial->GetOpacityData());
-	m_glossiness = MaxHelpers::GetPropertyFloat(maxMaterial->GetGlossinessData());
-	m_specularLevel = MaxHelpers::GetPropertyFloat(maxMaterial->GetSpecularLevelData());
+	m_glossiness = MaxHelpers::GetPropertyFloat(maxMaterial->GetGlossinessData()) * 64.0f;
+	m_specularLevel = MaxHelpers::GetPropertyFloat(maxMaterial->GetSpecularLevelData()) * 1.0f;
 
 	for (int i = 0; i < maxMaterial->GetNumberOfTextureMaps(); i++)
 	{
@@ -62,18 +62,37 @@ Material* MaterialProcessor::CreateMaterial()
 	material->Name = m_name;
 
 	if (m_diffuseTextureName.empty() &&
-		m_normalMapTextureName.empty())
+		m_normalMapTextureName.empty() &&
+		m_specularLevel == 0.0f)
 	{
-		material->ShaderName = "SolidColorDiffuse";
+		material->ShaderName = "SolidDiff";
 		material->AddParameter("u_color", "vec3", StringUtils::ToString(m_diffuseColor));
+	}
+	else if (m_diffuseTextureName.empty() &&
+		m_normalMapTextureName.empty() &&
+		m_specularLevel > 0.0f)
+	{
+		material->ShaderName = "SolidDiffSpec";
+		material->AddParameter("u_color", "vec3", StringUtils::ToString(m_diffuseColor));
+		material->AddParameter("u_specularLevel", "float", StringUtils::ToString(m_specularLevel));
+		material->AddParameter("u_glossiness", "float", StringUtils::ToString(m_glossiness));
+	}
+	else if (!m_diffuseTextureName.empty() &&
+		m_normalMapTextureName.empty() &&
+		m_specularLevel == 0.0f)
+	{
+		material->ShaderName = "TexDiff";
+		material->AddParameter("u_diffTex", "texture", m_diffuseTextureName);
 	}
 	else if (
 		!m_diffuseTextureName.empty() &&
-		m_normalMapTextureName.empty())
+		m_normalMapTextureName.empty() &&
+		m_specularLevel > 0.0f)
 	{
-		material->ShaderName = "SolidColor";
-		material->AddParameter("u_color", "vec3", StringUtils::ToString(m_diffuseColor));
+		material->ShaderName = "TexDiffSpec";
 		material->AddParameter("u_diffTex", "texture", m_diffuseTextureName);
+		material->AddParameter("u_specularLevel", "float", StringUtils::ToString(m_specularLevel));
+		material->AddParameter("u_glossiness", "float", StringUtils::ToString(m_glossiness));
 	}
 
 	return material;
