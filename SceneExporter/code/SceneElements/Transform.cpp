@@ -15,7 +15,7 @@ void Transform::SetFromNode(IGameNode* node)
 	if (node == NULL)
 		return;
 
-	GMatrix worldMatrix = node->GetWorldTM();
+	GMatrix worldMatrix = node->GetObjectTM();
 
 	Point3 igPosition = worldMatrix.Translation();
 	AngAxis igRotation(worldMatrix.Rotation());

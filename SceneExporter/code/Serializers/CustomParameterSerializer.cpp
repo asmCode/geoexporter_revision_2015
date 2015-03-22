@@ -1,6 +1,6 @@
 #include "CustomParameterSerializer.h"
 #include "../Common/CustomParameter.h"
-#include "../XmlWriter.h"
+#include <XML/XmlWriter.h>
 #include <sstream>
 
 namespace Serializers

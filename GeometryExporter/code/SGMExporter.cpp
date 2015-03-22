@@ -333,7 +333,7 @@ Scene3DMesh* SGMExporter::ConvertMesh(IGameNode* meshNode)
 			Log::LogT("no material found for %s", meshNodeName.c_str());
 
 		for (int i = 0; i < gMesh ->GetNumberOfFaces(); i++)
-			ExtractVertices(gMesh ->GetFace(i), gMesh, meshPart ->vertices, vertexType);
+			ExtractVertices(gMesh->GetFace(i), gMesh, meshPart->vertices, vertexType);
 	}
 	else
 	{
@@ -357,7 +357,7 @@ Scene3DMesh* SGMExporter::ConvertMesh(IGameNode* meshNode)
 			
 			for (int j = 0; j < gFaces.Count(); j++)
 			{
-				ExtractVertices(gFaces[j], gMesh, meshPart ->vertices, vertexType);
+				ExtractVertices(gFaces[j], gMesh, meshPart->vertices, vertexType);
 			}
 		}
 	}
@@ -381,10 +381,12 @@ void SGMExporter::ExtractVertices(FaceEx *gFace, IGameMesh *gMesh, std::vector<S
 	{
 		Scene3DVertex *vert = new Scene3DVertex();
 
+		Point3 position = gMesh->GetVertex(gFace->vert[i], true);
+
 		vert ->position.Set(
-			gMesh->GetVertex(gFace ->vert[i], true).x,
-			gMesh->GetVertex(gFace->vert[i], true).y,
-			gMesh->GetVertex(gFace->vert[i], true).z);
+			position.x,
+			position.y,
+			position.z);
 
 		if (VertexInformation::HasAttrib(vertexType, VertexAttrib::Coords1))
 		{
