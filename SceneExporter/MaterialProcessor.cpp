@@ -94,6 +94,17 @@ Material* MaterialProcessor::CreateMaterial()
 		material->AddParameter("u_specularLevel", "float", StringUtils::ToString(m_specularLevel));
 		material->AddParameter("u_glossiness", "float", StringUtils::ToString(m_glossiness));
 	}
+	else if	(
+		!m_diffuseTextureName.empty() &&
+		!m_normalMapTextureName.empty() &&
+		m_specularLevel > 0.0f)
+	{
+		// tymczasowy zwykly tex diff specular
+		material->ShaderName = "TexDiffSpec";
+		material->AddParameter("u_diffTex", "texture", m_diffuseTextureName);
+		material->AddParameter("u_specularLevel", "float", StringUtils::ToString(m_specularLevel));
+		material->AddParameter("u_glossiness", "float", StringUtils::ToString(m_glossiness));
+	}
 
 	return material;
 }

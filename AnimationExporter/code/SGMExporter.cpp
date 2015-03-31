@@ -284,7 +284,7 @@ bool SGMExporter::ExportScene(BinaryWriter *fh)
 	return true;
 }
 
-bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_interface)
+bool SGMExporter::DoExport(const wchar_t *name, ExpInterface *ei, Interface *max_interface)
 {
 	//log ->AddLog(sb() + "exporting animation to file '" + name + "'");
 

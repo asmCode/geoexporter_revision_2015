@@ -202,21 +202,18 @@
     <ClCompile Include="..\..\Code\Framework\IO\BinaryWriter.cpp" />
     <ClCompile Include="..\..\Code\Framework\Utils\Log.cpp" />
     <ClCompile Include="..\..\Code\Framework\Utils\StringUtils.cpp" />
-    <ClCompile Include="code\scene3d\GeoSaver.cpp" />
     <ClCompile Include="code\DllMain.cpp" />
+    <ClCompile Include="code\scene3d\Mesh.cpp" />
+    <ClCompile Include="code\scene3d\Model.cpp" />
+    <ClCompile Include="code\scene3d\Triangle.cpp" />
     <ClCompile Include="code\SGMExporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\Property.h" />
-    <ClInclude Include="code\scene3d\GeoSaver.h" />
-    <ClInclude Include="code\scene3d\Scene3DMesh.h" />
-    <ClInclude Include="code\scene3d\Scene3DMeshPart.h" />
-    <ClInclude Include="code\scene3d\VertexChannel.h" />
-    <ClInclude Include="code\scene3d\Scene3DVertex.h" />
+    <ClInclude Include="code\scene3d\Mesh.h" />
+    <ClInclude Include="code\scene3d\Model.h" />
+    <ClInclude Include="code\scene3d\Triangle.h" />
     <ClInclude Include="code\SGMExporter.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="smietnik.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

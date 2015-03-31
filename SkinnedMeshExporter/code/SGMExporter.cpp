@@ -375,7 +375,7 @@ bool SGMExporter::GetMeshes(std::vector<Scene3DMesh*> &meshes, BinaryWriter *bw)
 	return true;
 }
 
-bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_interface)
+bool SGMExporter::DoExport(const wchar_t *name, ExpInterface *ei, Interface *max_interface)
 {
 	scene = GetIGameInterface();
 	assert(scene != NULL);

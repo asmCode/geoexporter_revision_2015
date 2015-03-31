@@ -1,6 +1,7 @@
 #include "Transform.h"
 #include <XML/XmlWriter.h>
 #include <IGame/IGame.h>
+#include <Utils/Log.h>
 
 Transform::Transform() :
 	m_position(0, 0, 0),
@@ -15,11 +16,11 @@ void Transform::SetFromNode(IGameNode* node)
 	if (node == NULL)
 		return;
 
-	GMatrix worldMatrix = node->GetObjectTM();
+	GMatrix objectMatrix = node->GetObjectTM();
 
-	Point3 igPosition = worldMatrix.Translation();
-	AngAxis igRotation(worldMatrix.Rotation());
-	Point3 igScale = worldMatrix.Scaling();
+	Point3 igPosition = objectMatrix.Translation();
+	AngAxis igRotation(objectMatrix.Rotation());
+	Point3 igScale = objectMatrix.Scaling();
 
 	m_position = sm::Vec3(igPosition.x, igPosition.y, igPosition.z);
 	m_rotation = sm::Vec4(igRotation.angle, igRotation.axis.x, igRotation.axis.y, igRotation.axis.z);

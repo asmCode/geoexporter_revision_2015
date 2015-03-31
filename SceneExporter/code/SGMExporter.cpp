@@ -57,7 +57,7 @@ IGameControlType GetGameControlType(int propType)
 	return IGameControlType::IGAME_FLOAT;
 }
 
-bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_interface)
+bool SGMExporter::DoExport(const wchar_t *name, ExpInterface *ei, Interface *max_interface)
 {
 	scene = GetIGameInterface();
 	assert(scene != NULL);

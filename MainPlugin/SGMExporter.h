@@ -26,7 +26,7 @@ public:
 	const TCHAR * OtherMessage2(); 
 	unsigned int Version(); 
 	void  ShowAbout(HWND hWnd); 
-	int  DoExport(const TCHAR *name, ExpInterface *ei, Interface *i, BOOL suppressPrompts, DWORD options); 
+	int  DoExport(const wchar_t *name, ExpInterface *ei, Interface *i, BOOL suppressPrompts, DWORD options);
 
 private:
 	static const int VERSION = 100;

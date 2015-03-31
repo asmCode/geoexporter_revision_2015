@@ -109,7 +109,7 @@ public:
 	SGMExporter();
 	~SGMExporter();
 
-	bool DoExport(const TCHAR *name, ExpInterface *ei, Interface *i); 
+	bool DoExport(const wchar_t *name, ExpInterface *ei, Interface *i);
 	const char *GetResultMessage();
 
 	void RegisterObserver(IProgressObserver *observer);

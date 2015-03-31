@@ -40,7 +40,7 @@ bool SGMExporter::ExportCams(BinaryWriter *bw)
 
 #include <fstream>
 
-bool SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_interface)
+bool SGMExporter::DoExport(const wchar_t *name, ExpInterface *ei, Interface *max_interface)
 {
 	file_name = StringUtils::ToNarrow(name);
 	Log::LogT("exporting cameras to file '%s'", file_name.c_str());

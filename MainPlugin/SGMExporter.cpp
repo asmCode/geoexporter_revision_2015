@@ -61,7 +61,7 @@ void SGMExporter::ShowAbout(HWND hWnd)
 }
 
 
-int SGMExporter::DoExport(const TCHAR *name, ExpInterface *ei, Interface *max_interface, BOOL suppressPrompts, DWORD options)
+int SGMExporter::DoExport(const wchar_t *name, ExpInterface *ei, Interface *max_interface, BOOL suppressPrompts, DWORD options)
 {
 	IExporterController *exporterController = new ExporterController(ei, max_interface);
 
