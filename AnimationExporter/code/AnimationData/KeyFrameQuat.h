@@ -2,17 +2,17 @@
 
 #include "KeyFrameBase.h"
 
-class KeyFrameVec4 : public KeyFrameBase
+class KeyFrameQuat : public KeyFrameBase
 {
 public:
-	KeyFrameVec4(float time, float x, float y, float z, float w);
+	KeyFrameQuat(float time, float a, float x, float y, float z);
 
 	std::string Serialize();
 
 private:
+	float m_a;
 	float m_x;
 	float m_y;
 	float m_z;
-	float m_w;
 };
 

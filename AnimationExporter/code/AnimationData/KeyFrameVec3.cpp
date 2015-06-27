@@ -12,7 +12,7 @@ KeyFrameVec3::KeyFrameVec3(float time, float x, float y, float z)
 std::string KeyFrameVec3::Serialize()
 {
 	char text[1024];
-	sprintf(text, "<key t=\"%f\" v=\"%f,%f,%f\" />", m_time, m_x, m_y, m_z);
+	sprintf(text, "<Key t=\"%f\" v=\"%f,%f,%f\" />", m_time, m_x, m_y, m_z);
 	return text;
 }
 
