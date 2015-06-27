@@ -153,6 +153,7 @@
     <ClCompile Include="..\..\Code\Framework\Math\MathUtils.cpp" />
     <ClCompile Include="..\..\Code\Framework\Utils\Log.cpp" />
     <ClCompile Include="..\..\Code\Framework\Utils\StringUtils.cpp" />
+    <ClCompile Include="..\..\Code\Framework\XML\XmlWriter.cpp" />
     <ClCompile Include="code\Common\CustomParameter.cpp" />
     <ClCompile Include="code\Common\Parameter.cpp" />
     <ClCompile Include="code\DllMain.cpp" />

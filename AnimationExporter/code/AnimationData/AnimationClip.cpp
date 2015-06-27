@@ -1,6 +1,7 @@
 #include "AnimationClip.h"
 #include "AnimationCurve.h"
 #include <XML/XmlWriter.h>
+#include <Utils/Log.h>
 #include <stdint.h>
 
 AnimationClip::AnimationClip(const std::string &name)

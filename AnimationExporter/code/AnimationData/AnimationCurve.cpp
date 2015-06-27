@@ -1,6 +1,7 @@
 #include "AnimationCurve.h"
 #include "KeyFrameBase.h"
 #include <XML/XmlWriter.h>
+#include <Utils/Log.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -27,10 +28,10 @@ std::string AnimationCurve::Serialize()
 {
 	XmlWriter xml;
 	xml.OpenElement("Anim");
-	xml.WriteAttribute("propertyType", PropertyTypeToString(m_propertyType));
-	xml.WriteAttribute("target_name", m_objectName);
-	xml.WriteAttribute("component_name", m_componentName);
-	xml.WriteAttribute("property_name", m_propertyName);
+	xml.WriteAttribute("type", PropertyTypeToString(m_propertyType));
+	xml.WriteAttribute("target", m_objectName);
+	xml.WriteAttribute("component", m_componentName);
+	xml.WriteAttribute("property", m_propertyName);
 
 	for (uint32_t i = 0; i < m_keyframes.size(); i++)
 		xml.CreateElementInline(m_keyframes[i]->Serialize());

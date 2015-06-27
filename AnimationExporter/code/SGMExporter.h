@@ -24,22 +24,10 @@ class SGMExporter : public IExportInterface
 {
 private:
 	IGameScene *gScene;
+	std::string m_filename;
 
 	std::vector<IProgressObserver*> observers;
-
-	bool ExportPositionKeys(IGameNode *gNode, IGameControl *gControl, BinaryWriter *bw);
-	bool ExportRotationKeys(IGameNode *gNode, IGameControl *gControl, BinaryWriter *bw);
-	bool ExportScaleKeys(IGameNode *gNode, IGameControl *gControl, BinaryWriter *bw);
-
-	bool ExportScene(BinaryWriter *fh);
-	void ExportObjects(BinaryWriter *fh);
-	void ExportNode(IGameNode *gNode, BinaryWriter *fh);
-	void ExportMatrix(const GMatrix &m, BinaryWriter *fh);
-
-	void ExportStaticPos(IGameNode *gNode, BinaryWriter *bw);
-	void ExportStaticRot(IGameNode *gNode, BinaryWriter *bw);
-	void ExportStaticScale(IGameNode *gNode, BinaryWriter *bw);
-
+	
 	void SetProgressSteps(int progressSteps);
 	void StepProgress();
 
@@ -48,7 +36,9 @@ public:
 	~SGMExporter();
 
 	bool DoExport(const wchar_t *name, ExpInterface *ei, Interface *i);
+	bool InitializeScene();
 	const char *GetResultMessage();
+	void FlattenNodes(IGameNode* node, std::vector<IGameNode*>& nodes);
 
 	void RegisterObserver(IProgressObserver *observer);
 	void UnregisterObserver(IProgressObserver *observer);
