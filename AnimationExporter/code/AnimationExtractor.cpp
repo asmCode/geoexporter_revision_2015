@@ -65,15 +65,27 @@ void AnimationExtractor::AddNode(IGameNode* gNode)
 
 	if (rotationKeys.Count() > 0)
 	{
+		Quat netQuat;
+		netQuat.Identity();
+
 		AnimationCurve* animationCurve = new AnimationCurve(PropertyType_Quat, nodeName, "Transform", "Rotation");
 		for (int i = 0; i < rotationKeys.Count(); i++)
 		{
+			Quat quat;
+			quat.Set(rotationKeys[i].tcbKey.aval);
+
+			netQuat = netQuat * quat;
+			netQuat.Normalize();
+
+			AngAxis angAxis;
+			angAxis.Set(netQuat);
+
 			KeyFrameQuat* key = new KeyFrameQuat(
 				TicksToSec(rotationKeys[i].t),
-				rotationKeys[i].tcbKey.aval.angle,
-				rotationKeys[i].tcbKey.aval.axis.x,
-				rotationKeys[i].tcbKey.aval.axis.y,
-				rotationKeys[i].tcbKey.aval.axis.z);
+				angAxis.angle,
+				angAxis.axis.x,
+				angAxis.axis.y,
+				angAxis.axis.z);
 
 			animationCurve->AddKeyframe(key);
 		}
