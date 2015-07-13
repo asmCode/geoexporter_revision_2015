@@ -24,5 +24,7 @@ private:
 		IGameControl *gControl,
 		IGameControlType controlType,
 		IGameKeyTab& keys);
+
+	bool IsCamera(IGameNode* igNode);
 };
 

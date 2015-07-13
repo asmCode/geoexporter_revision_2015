@@ -68,6 +68,9 @@ void AnimationExtractor::AddNode(IGameNode* gNode)
 		Quat netQuat;
 		netQuat.Identity();
 
+		if (IsCamera(gNode)) // w 3d studio max kamera domyslnie patrzy w dol, dlatego trzeba ja obrocic o 90 wzgledem osi x
+			netQuat = Quat(AngAxis(1, 0, 0, MathUtils::PI2));
+
 		AnimationCurve* animationCurve = new AnimationCurve(PropertyType_Quat, nodeName, "Transform", "Rotation");
 		for (int i = 0; i < rotationKeys.Count(); i++)
 		{
@@ -93,7 +96,7 @@ void AnimationExtractor::AddNode(IGameNode* gNode)
 		m_animationClip->AddAnimationCurve(animationCurve);
 	}
 
-	if (scaleKeys.Count() > 0)
+	if (scaleKeys.Count() > 0 && !IsCamera(gNode))
 	{
 		AnimationCurve* animationCurve = new AnimationCurve(PropertyType_Vec3, nodeName, "Transform", "Scale");
 		for (int i = 0; i < scaleKeys.Count(); i++)
@@ -149,4 +152,16 @@ void AnimationExtractor::ExtractKeys(
 	{
 		Log::LogT("warning: node '%s' doesn't have TCB controller", nodeName.c_str());
 	}
+}
+
+bool AnimationExtractor::IsCamera(IGameNode* igNode)
+{
+	if (igNode == NULL)
+		return false;
+
+	IGameObject* igObject = igNode->GetIGameObject();
+	if (igObject == NULL)
+		return false;
+
+	return igObject->GetIGameType() == IGameObject::ObjectTypes::IGAME_CAMERA;
 }
