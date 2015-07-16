@@ -38,6 +38,9 @@ void GameObject::SetFromNode(IGameScene* igScene, IGameNode* igNode)
 		return;
 
 	m_name = StringUtils::ToNarrow(igNode->GetName());
+	IGameNode* parent = igNode->GetNodeParent();
+	if (parent != nullptr)
+		m_parent = StringUtils::ToNarrow(parent->GetName());
 
 	m_transform = ExtractTransform(igNode);
 	m_mesh = SceneElements::Mesh::ExtractFromNode(igScene, igNode);
@@ -69,6 +72,8 @@ std::string GameObject::Serialize()
 	XmlWriter xml(&ss, 0);
 	xml.OpenElement("GameObject");
 	xml.WriteAttribute("name", m_name);
+	if (m_parent.size() > 0)
+		xml.WriteAttribute("parent", m_parent);
 
 	if (m_transform != NULL)
 		xml.CreateElementInline(m_transform->Serialize());

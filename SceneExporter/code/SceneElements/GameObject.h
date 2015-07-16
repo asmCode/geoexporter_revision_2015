@@ -30,6 +30,7 @@ public:
 
 private:
 	std::string m_name;
+	std::string m_parent;
 
 	Transform* m_transform;
 	SceneElements::Mesh* m_mesh;
