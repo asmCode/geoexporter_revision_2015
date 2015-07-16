@@ -44,5 +44,5 @@ private:
 	void FlattenNodes(IGameNode* node, std::vector<IGameNode*>& nodes);
 
 	void ExtractMesh(IGameNode* gNode, FuturisEngine::Export::Model* model);
-	void ExtractVertices(IGameMesh* gMesh, FuturisEngine::Export::Mesh* mesh);
+	void ExtractVertices(IGameNode* gNode, IGameMesh* gMesh, FuturisEngine::Export::Mesh* mesh);
 };

@@ -5,6 +5,7 @@
 
 #include <Utils/StringUtils.h>
 #include <Utils/Log.h>
+#include <Math/Matrix.h>
 
 #include <IGame/IGame.h>
 
@@ -17,7 +18,7 @@ SGMExporter::~SGMExporter()
 {
 }
 
-void SGMExporter::ExtractVertices(IGameMesh* gMesh, FuturisEngine::Export::Mesh* mesh)
+void SGMExporter::ExtractVertices(IGameNode* gNode, IGameMesh* gMesh, FuturisEngine::Export::Mesh* mesh)
 {
 	assert(gMesh != NULL);
 	assert(mesh != NULL);
@@ -43,15 +44,17 @@ void SGMExporter::ExtractVertices(IGameMesh* gMesh, FuturisEngine::Export::Mesh*
 		}
 	}
 
+	GMatrix worldMatrixInv = gNode->GetWorldTM().Inverse();
+
 	for (int i = 0; i < gMesh->GetNumberOfVerts(); i++)
 	{
-		Point3 position = gMesh->GetVertex(i, true);
+		Point3 position = gMesh->GetVertex(i) * worldMatrixInv;
 		mesh->AddVertex(position.x, position.y, position.z);
 	}
 
 	for (int i = 0; i < gMesh->GetNumberOfNormals(); i++)
 	{
-		Point3 normal = gMesh->GetNormal(i, true);
+		Point3 normal = worldMatrixInv.ExtractMatrix3().VectorTransform(gMesh->GetNormal(i));
 		mesh->AddNormal(normal.x, normal.y, normal.z);
 	}
 
@@ -83,7 +86,7 @@ void SGMExporter::ExtractMesh(IGameNode* gNode, FuturisEngine::Export::Model* mo
 
 	std::string name = StringUtils::ToNarrow(gNode->GetName());
 	FuturisEngine::Export::Mesh* mesh = new FuturisEngine::Export::Mesh(name);
-	ExtractVertices(igMesh, mesh);
+	ExtractVertices(gNode, igMesh, mesh);
 
 	if (mesh->Validate())
 		model->AddMesh(mesh);
