@@ -883,8 +883,10 @@ bool SGMExporter::WriteSceneToFile()
 	{
 		GameObject* gameObject = (*it);
 
+		/* Uncomment it if you want to skip empty objects
 		if (gameObject->IsEmpty())
 			continue;
+		*/
 		
 		xmlWriter.CreateElementInline(gameObject->Serialize());
 	}
