@@ -16,7 +16,7 @@ void Transform::SetFromNode(IGameNode* node)
 	if (node == NULL)
 		return;
 
-	GMatrix objectMatrix = node->GetObjectTM();
+	GMatrix objectMatrix = node->GetLocalTM();
 
 	Point3 igPosition = objectMatrix.Translation();
 	AngAxis igRotation(objectMatrix.Rotation());
