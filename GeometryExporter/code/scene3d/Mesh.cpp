@@ -26,6 +26,13 @@ namespace FuturisEngine
 			m_normalTriangles.push_back(c);
 		}
 
+		void Mesh::AddTangentTriangle(uint16_t a, uint16_t b, uint16_t c)
+		{
+			m_tangentTriangles.push_back(a);
+			m_tangentTriangles.push_back(b);
+			m_tangentTriangles.push_back(c);
+		}
+
 		void Mesh::AddCoord1Triangle(uint16_t a, uint16_t b, uint16_t c)
 		{
 			m_coord1Triangles.push_back(a);
@@ -41,6 +48,11 @@ namespace FuturisEngine
 		void Mesh::AddNormal(float x, float y, float z)
 		{
 			m_normals.push_back(sm::Vec3(x, y, z));
+		}
+
+		void Mesh::AddTangent(float x, float y, float z)
+		{
+			m_tangents.push_back(sm::Vec3(x, y, z));
 		}
 
 		void Mesh::AddCoord1(float u, float v)
@@ -62,6 +74,12 @@ namespace FuturisEngine
 				return false;
 			}
 
+			if (m_tangents.size() > USHRT_MAX)
+			{
+				Log::LogT("Mesh %s has to many tangents: %u", m_name.c_str(), m_tangents.size());
+				return false;
+			}
+
 			if (m_coords1.size() > USHRT_MAX)
 			{
 				Log::LogT("Mesh %s has to many coords: %u", m_name.c_str(), m_coords1.size());
@@ -76,9 +94,11 @@ namespace FuturisEngine
 			Log::LogT("Saving mesh: %s", m_name.c_str());
 			Log::LogT("Vertices: %u", m_vertices.size());
 			Log::LogT("Normals: %u", m_normals.size());
+			Log::LogT("Tangents: %u", m_tangents.size());
 			Log::LogT("Coords1: %u", m_coords1.size());
 
 			assert(m_normalTriangles.size() == 0 || m_normalTriangles.size() == m_vertexTriangles.size());
+			assert(m_tangentTriangles.size() == 0 || m_tangentTriangles.size() == m_vertexTriangles.size());
 			assert(m_coord1Triangles.size() == 0 || m_coord1Triangles.size() == m_vertexTriangles.size());
 
 			uint8_t vertexChannel = 0;
@@ -87,6 +107,8 @@ namespace FuturisEngine
 				vertexChannel |= FlagVertexChannelVertices;
 			if (m_normals.size() > 0)
 				vertexChannel |= FlagVertexChannelNormals;
+			if (m_tangents.size() > 0)
+				vertexChannel |= FlagVertexChannelTangents;
 			if (m_coords1.size() > 0)
 				vertexChannel |= FlagVertexChannelCoords1;
 
@@ -107,6 +129,12 @@ namespace FuturisEngine
 				writer.Write(m_normals.data(), (uint32_t)(m_normals.size() * sizeof(sm::Vec3)));
 			}
 
+			if ((vertexChannel & FlagVertexChannelTangents) > 0)
+			{
+				writer.Write((uint16_t)m_tangents.size());
+				writer.Write(m_tangents.data(), (uint32_t)(m_tangents.size() * sizeof(sm::Vec3)));
+			}
+
 			if ((vertexChannel & FlagVertexChannelCoords1) > 0)
 			{
 				writer.Write((uint16_t)m_coords1.size());
@@ -123,6 +151,9 @@ namespace FuturisEngine
 
 				if ((vertexChannel & FlagVertexChannelNormals) > 0)
 					writer.Write(m_normalTriangles.data() + i * 3, sizeof(uint16_t) * 3);
+
+				if ((vertexChannel & FlagVertexChannelTangents) > 0)
+					writer.Write(m_tangentTriangles.data() + i * 3, sizeof(uint16_t) * 3);
 
 				if ((vertexChannel & FlagVertexChannelCoords1) > 0)
 					writer.Write(m_coord1Triangles.data() + i * 3, sizeof(uint16_t) * 3);

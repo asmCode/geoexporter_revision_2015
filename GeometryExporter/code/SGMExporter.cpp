@@ -23,6 +23,8 @@ void SGMExporter::ExtractVertices(IGameNode* gNode, IGameMesh* gMesh, FuturisEng
 	assert(gMesh != NULL);
 	assert(mesh != NULL);
 
+	gMesh->InitializeBinormalData();
+
 	for (int i = 0; i < gMesh->GetNumberOfFaces(); i++)
 	{
 		FaceEx* face = gMesh->GetFace(i);
@@ -34,6 +36,14 @@ void SGMExporter::ExtractVertices(IGameNode* gNode, IGameMesh* gMesh, FuturisEng
 
 		if (gMesh->GetNumberOfNormals() > 0)
 			mesh->AddNormalTriangle((uint16_t)face->norm[0], (uint16_t)face->norm[1], (uint16_t)face->norm[2]);
+
+		if (gMesh->GetNumberOfTangents() > 0)
+		{
+			mesh->AddTangentTriangle(
+				(uint16_t)gMesh->GetFaceVertexTangentBinormal(i, 0),
+				(uint16_t)gMesh->GetFaceVertexTangentBinormal(i, 1),
+				(uint16_t)gMesh->GetFaceVertexTangentBinormal(i, 2));
+		}
 
 		if (gMesh->GetNumberOfMapVerts(1) > 0)
 		{
@@ -56,6 +66,12 @@ void SGMExporter::ExtractVertices(IGameNode* gNode, IGameMesh* gMesh, FuturisEng
 	{
 		Point3 normal = worldMatrixInv.ExtractMatrix3().VectorTransform(gMesh->GetNormal(i));
 		mesh->AddNormal(normal.x, normal.y, normal.z);
+	}
+
+	for (int i = 0; i < gMesh->GetNumberOfTangents(); i++)
+	{
+		Point3 tangent = worldMatrixInv.ExtractMatrix3().VectorTransform(gMesh->GetTangent(i));
+		mesh->AddTangent(tangent.x, tangent.y, tangent.z);
 	}
 
 	for (int i = 0; i < gMesh->GetNumberOfMapVerts(1); i++)
